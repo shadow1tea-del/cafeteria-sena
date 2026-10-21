@@ -1,0 +1,425 @@
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #30283b;
+  background: #f8f7fc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f8f7fc;
+}
+
+button {
+  font: inherit;
+}
+
+.app-layout {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 10;
+  width: 258px;
+  padding: 27px 18px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-right: 1px solid #eeeaf5;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 7px 31px;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: white;
+  font-size: 21px;
+  background: linear-gradient(135deg, #9a7be7, #e5a9ce);
+}
+
+.brand h5 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.brand small {
+  color: #92899f;
+  font-size: 12px;
+}
+
+.menu-label,
+.connection-title,
+.eyebrow {
+  color: #a29aae;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.menu-label {
+  padding: 0 12px 12px;
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 3px 0;
+  padding: 12px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #777085;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.menu-item i {
+  font-size: 17px;
+}
+
+.menu-item:hover {
+  background: #f7f3fc;
+  color: #7455b9;
+}
+
+.menu-item.active {
+  background: #f0eafb;
+  color: #7856bf;
+  font-weight: 750;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 8px 0;
+  border-top: 1px solid #f0edf5;
+}
+
+.connection-title {
+  margin-bottom: 13px;
+  font-size: 9px;
+}
+
+.connection-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: #716a7e;
+  font-size: 11px;
+}
+
+.connection-row .badge {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.main-content {
+  min-height: 100vh;
+  margin-left: 258px;
+  padding: 30px 34px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 27px;
+}
+
+.topbar h4 {
+  margin: 5px 0 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.refresh-btn {
+  border: 1px solid #e9e4f0;
+  border-radius: 10px;
+  background: white;
+  padding: 10px 14px;
+  color: #665b78;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.welcome-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 190px;
+  overflow: hidden;
+  padding: 30px 34px;
+  border-radius: 19px;
+  background: linear-gradient(110deg, #eee7ff 0%, #f8eaf5 57%, #fff0e8 100%);
+}
+
+.welcome-tag {
+  color: #8063b8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.welcome-panel h2 {
+  margin: 12px 0 8px;
+  color: #3e3158;
+  font-size: clamp(23px, 3vw, 32px);
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+
+.welcome-panel p {
+  max-width: 470px;
+  margin: 0;
+  color: #756a86;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.welcome-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 112px;
+  height: 112px;
+  border: 1px solid #ffffffa0;
+  border-radius: 30px;
+  background: #ffffff70;
+  color: #9b7bd3;
+  font-size: 57px;
+  transform: rotate(5deg);
+}
+
+.metric-card,
+.content-card {
+  background: white;
+  border: 1px solid #efebf5;
+  border-radius: 16px;
+  box-shadow: 0 5px 22px #4d347008;
+}
+
+.metric-card {
+  height: 100%;
+  min-height: 176px;
+  padding: 19px;
+}
+
+.metric-icon {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+.metric-icon.lilac {
+  background: #f0e9ff;
+  color: #8662cf;
+}
+
+.metric-icon.peach {
+  background: #fff0e5;
+  color: #cf8952;
+}
+
+.metric-icon.mint {
+  background: #e4f6ed;
+  color: #429b72;
+}
+
+.metric-icon.pink {
+  background: #fce8f1;
+  color: #c56c9b;
+}
+
+.metric-card p {
+  margin: 14px 0 4px;
+  color: #8b8399;
+  font-size: 12px;
+}
+
+.metric-card h3 {
+  margin: 0 0 5px;
+  color: #342c43;
+  font-size: 29px;
+  font-weight: 850;
+}
+
+.metric-card small {
+  color: #a29aae;
+  font-size: 10px;
+}
+
+.content-card {
+  overflow: hidden;
+  padding: 21px 23px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.card-heading h5 {
+  margin: 0 0 5px;
+  color: #3c334b;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.card-heading p {
+  margin: 0;
+  color: #9a92a6;
+  font-size: 11px;
+}
+
+.card-heading .btn {
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+.table {
+  font-size: 12px;
+  color: #5f576e;
+}
+
+.table thead th {
+  padding: 13px 12px;
+  border-bottom: 1px solid #eeeaf4;
+  background: #fbfaff;
+  color: #8f879e;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 14px 12px;
+  border-color: #f2eff6;
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr:hover td {
+  background: #fdfbff;
+}
+
+.page-footer {
+  padding: 28px 0 8px;
+  color: #a49bad;
+  text-align: center;
+  font-size: 10px;
+}
+
+@media (max-width: 1000px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    padding: 25px 20px;
+  }
+
+  .welcome-icon {
+    width: 82px;
+    height: 82px;
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 16px;
+    border-right: 0;
+    border-bottom: 1px solid #eeeaf5;
+  }
+
+  .brand {
+    padding-bottom: 17px;
+  }
+
+  .menu-label,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .sidebar nav {
+    flex-direction: row !important;
+    overflow-x: auto;
+    gap: 5px;
+  }
+
+  .menu-item {
+    width: auto;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 10px;
+  }
+
+  .menu-item span {
+    white-space: nowrap;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 20px 14px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .welcome-panel {
+    padding: 24px 20px;
+  }
+
+  .welcome-icon {
+    display: none;
+  }
+
+  .content-card {
+    padding: 16px 12px;
+  }
+}

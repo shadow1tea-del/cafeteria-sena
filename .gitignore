@@ -1,0 +1,25 @@
+.env
+**/.env
+**/node_modules/
+dist/
+
+# Configuracion local y secretos
+.env.*
+!.env.example
+**/.env.*
+!**/.env.example
+
+# Dependencias y compilaciones
+**/node_modules/
+**/dist/
+coverage/
+
+# Claves privadas y certificados
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Respaldos de bases de datos
+*.sql
+*.sql.gz
