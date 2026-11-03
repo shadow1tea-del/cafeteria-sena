@@ -62,6 +62,39 @@ function App() {
     supabase: 'cargando',
   });
 
+  const [estadoNube, setEstadoNube] = useState({
+    azure: 'cargando',
+    amazon: 'cargando',
+  });
+
+  async function cargarEstadoNube() {
+    try {
+      const respuesta = await fetch(`${API}/api/estado-bases-datos`);
+
+      if (!respuesta.ok) {
+        throw new Error(`Error HTTP ${respuesta.status}`);
+      }
+
+      const datos = await respuesta.json();
+
+      const azure = datos.conexiones.find(
+        (conexion) => conexion.proveedor === 'Microsoft Azure'
+      );
+
+      const amazon = datos.conexiones.find(
+        (conexion) => conexion.proveedor === 'Amazon Web Services'
+      );
+
+      setEstadoNube({
+        azure: azure?.estado === 'Conectado' ? 'conectado' : 'error',
+        amazon: amazon?.estado === 'Conectado' ? 'conectado' : 'error',
+      });
+    } catch (error) {
+      console.error('Error verificando las bases de datos en la nube:', error);
+      setEstadoNube({ azure: 'error', amazon: 'error' });
+    }
+  }
+
   async function cargarDatos() {
     const peticiones = [
       {
@@ -113,6 +146,7 @@ function App() {
 
   useEffect(() => {
     cargarDatos();
+    cargarEstadoNube();
   }, []);
 
   const menu = [
@@ -141,6 +175,18 @@ function App() {
       return <span className="badge text-bg-danger">Error de conexiÃ³n</span>;
     }
     return <span className="badge text-bg-secondary">Conectandoâ€¦</span>;
+  }
+
+  function estadoConexionNube(nombre) {
+    if (estadoNube[nombre] === 'conectado') {
+      return <span className="badge text-bg-success">Conectado</span>;
+    }
+
+    if (estadoNube[nombre] === 'error') {
+      return <span className="badge text-bg-danger">Desconectado</span>;
+    }
+
+    return <span className="badge text-bg-secondary">Verificando...</span>;
   }
 
   function tituloSeccion() {
@@ -191,7 +237,11 @@ function App() {
           </div>
           <div className="connection-row">
             <span>Azure MySQL</span>
-            {estadoConexion('azure')}
+            {estadoConexionNube('azure')}
+          </div>
+          <div className="connection-row">
+            <span>Amazon RDS</span>
+            {estadoConexionNube('amazon')}
           </div>
           <div className="connection-row">
             <span>Supabase</span>
@@ -206,7 +256,13 @@ function App() {
             <div className="eyebrow">GESTIÃ“N DE CAFETERÃA</div>
             <h4>{tituloSeccion()}</h4>
           </div>
-          <button className="btn btn-light refresh-btn" onClick={cargarDatos}>
+          <button
+            className="btn btn-light refresh-btn"
+            onClick={() => {
+              cargarDatos();
+              cargarEstadoNube();
+            }}
+          >
             <i className="bi bi-arrow-clockwise me-2"></i>
             Actualizar datos
           </button>

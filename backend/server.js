@@ -5,6 +5,8 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const { Pool } = require('pg');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 
@@ -43,6 +45,22 @@ const dbSupabase = new Pool({
   database: process.env.SUPABASE_DB_NAME,
   ssl: { rejectUnauthorized: false },
   connectionTimeoutMillis: 10000
+});
+
+
+// 4. Base de datos Amazon RDS MySQL
+const dbAWS = mysql.createPool({
+  host: process.env.AWS_DB_HOST,
+  port: Number(process.env.AWS_DB_PORT),
+  user: process.env.AWS_DB_USER,
+  password: process.env.AWS_DB_PASSWORD,
+  database: process.env.AWS_DB_NAME,
+  ssl: {
+    ca: fs.readFileSync(path.join(__dirname, 'certs/global-bundle.pem')),
+    minVersion: 'TLSv1.2'
+  },
+  waitForConnections: true,
+  connectionLimit: 5
 });
 
 // Ruta principal para comprobar que la API está activa
@@ -125,6 +143,68 @@ app.get('/api/alertas-supabase', async (req, res) => {
   });
 }
 
+});
+
+
+// Comprobar conexiones de Azure y Amazon RDS
+app.get('/api/conexiones', async (req, res) => {
+  const resultados = {};
+
+  for (const [nombre, conexion] of [
+    ['Azure MySQL', dbAzure],
+    ['Amazon RDS', dbAWS]
+  ]) {
+    try {
+      await conexion.query('SELECT 1 AS conectado');
+      resultados[nombre] = 'Conectado correctamente';
+    } catch (error) {
+      console.error(`Error ${nombre}:`, error.message);
+      resultados[nombre] = 'Error de conexión: ' + error.message;
+    }
+  }
+
+  const correcto = Object.values(resultados).every(
+    valor => valor === 'Conectado correctamente'
+  );
+
+  res.status(correcto ? 200 : 503).json(resultados);
+});
+
+
+// Estado de las bases de datos en la nube
+app.get('/api/estado-bases-datos', async (req, res) => {
+  const conexiones = [
+    { nombre: 'Azure Database for MySQL', proveedor: 'Microsoft Azure', db: dbAzure },
+    { nombre: 'Amazon RDS MySQL', proveedor: 'Amazon Web Services', db: dbAWS }
+  ];
+
+  const resultados = await Promise.all(
+    conexiones.map(async ({ nombre, proveedor, db }) => {
+      try {
+        await db.query('SELECT 1');
+        return {
+          nombre,
+          proveedor,
+          motor: 'MySQL',
+          estado: 'Conectado'
+        };
+      } catch (error) {
+        return {
+          nombre,
+          proveedor,
+          motor: 'MySQL',
+          estado: 'Desconectado',
+          error: error.code || 'ERROR'
+        };
+      }
+    })
+  );
+
+  res.status(200).json({
+    sistema: 'Cafetería SENA',
+    fechaComprobacion: new Date().toISOString(),
+    conexiones: resultados
+  });
 });
 
 // Iniciar servidor
